@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Text, TextInput, Button, View, Alert } from "react-native";
 import { StackScreenProps } from "@react-navigation/stack";
 import { StyledText } from "../../../App";
-import Config from "react-native-config";
+import { baseUrl } from "../../hooks";
 
 // Definisikan tipe untuk parameter yang diterima oleh setiap screen
 type RootStackParamList = {
@@ -36,7 +36,8 @@ export default function EditPelanggan({ route, navigation }: Props) {
   // Fungsi untuk mengambil data pelanggan berdasarkan id
   const fetchPelanggan = async () => {
     try {
-      const response = await fetch(`${Config.API_URL}/pelanggan/${id}`);
+      // const response = await fetch(`${Config.API_URL}/pelanggan/${id}`);
+      const response = await fetch(`${baseUrl}/pelanggan/${id}`);
       const json = await response.json();
 
       if (response.ok) {
@@ -62,7 +63,8 @@ export default function EditPelanggan({ route, navigation }: Props) {
   // Fungsi untuk mengupdate data pelanggan
   const handleSubmit = async () => {
     try {
-      const response = await fetch(`${Config.API_URL}/pelanggan/${id}`, {
+      // const response = await fetch(`${Config.API_URL}/pelanggan/${id}`, {
+      const response = await fetch(`${baseUrl}/pelanggan/${id}`, {
         method: "PUT", // Menggunakan metode PUT untuk update data
         headers: {
           "Content-Type": "application/json",

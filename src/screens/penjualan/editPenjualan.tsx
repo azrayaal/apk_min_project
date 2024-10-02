@@ -10,7 +10,7 @@ import { useRoute, useNavigation } from "@react-navigation/native";
 import { Picker } from "@react-native-picker/picker";
 
 import { StyledText, StyledView } from "../../../App";
-import Config from "react-native-config";
+import { baseUrl } from "../../hooks";
 
 // Define types for Penjualan, Item, and Barang
 interface Item {
@@ -61,7 +61,8 @@ export default function EditPenjualan() {
   // Fetch available items (products) from the API
   const getAvailableItems = async () => {
     try {
-      const response = await fetch(`${Config.API_URL}/barang`);
+      const response = await fetch(`${baseUrl}/barang`);
+      // const response = await fetch(`${Config.API_URL}/barang`);
       const data = await response.json();
       setAvailableItems(data);
     } catch (error) {
@@ -72,7 +73,8 @@ export default function EditPenjualan() {
   // Fetch penjualan data from the API
   const getPenjualan = async () => {
     try {
-      const response = await fetch(`${Config.API_URL}/penjualan/${id}`);
+      const response = await fetch(`${baseUrl}/penjualan/${id}`);
+      // const response = await fetch(`${Config.API_URL}/penjualan/${id}`);
       const data = await response.json();
       console.log("data penjualan", data);
       setPenjualan(data);
@@ -92,7 +94,8 @@ export default function EditPenjualan() {
   // Handle delete item
   const handleDeleteItem = async (itemId: any) => {
     try {
-      await fetch(`${Config.API_URL}/item-penjualan/${penjualan.nota}/items`, {
+      await fetch(`${baseUrl}/item-penjualan/${penjualan.nota}/items`, {
+        // await fetch(`${Config.API_URL}/item-penjualan/${penjualan.nota}/items`, {
         method: "DELETE",
       });
       Alert.alert("Success", "Item berhasil dihapus");
@@ -115,7 +118,8 @@ export default function EditPenjualan() {
   const handleAddItem = async () => {
     if (barangInput.id && barangInput.qty > 0) {
       try {
-        await fetch(`${Config.API_URL}/penjualan/${penjualan.nota}/items`, {
+        await fetch(`${baseUrl}/penjualan/${penjualan.nota}/items`, {
+          // await fetch(`${Config.API_URL}/penjualan/${penjualan.nota}/items`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

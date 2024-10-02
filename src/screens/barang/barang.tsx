@@ -8,7 +8,7 @@ import {
   StyledView,
 } from "../../../App";
 import { Props } from "../home";
-import Config from "react-native-config";
+import { baseUrl } from "../../hooks";
 
 interface BarangItem {
   id: number;
@@ -23,11 +23,11 @@ interface BarangItem {
 export default function Barang({ navigation }: Props) {
   const [data, setData] = useState<BarangItem[]>([]); // Menyimpan data barang
   const [loading, setLoading] = useState(true); // State untuk indikator loading
-  console.log(Config.API_URL);
   // Fungsi untuk mengambil data dari API
   const fetchData = async () => {
     try {
-      const response = await fetch(`${Config.API_URL}/barang`); // Ganti dengan 10.0.2.2 jika pakai Android emulator
+      // const response = await fetch(`${Config.API_URL}/barang`); // Ganti dengan 10.0.2.2 jika pakai Android emulator
+      const response = await fetch(`${baseUrl}/barang`); // Ganti dengan 10.0.2.2 jika pakai Android emulator
       const json: BarangItem[] = await response.json();
       console.log(json);
       setData(json); // Menyimpan data ke state
@@ -41,7 +41,8 @@ export default function Barang({ navigation }: Props) {
   // Fungsi untuk menghapus data
   const handleDelete = async (id: number) => {
     try {
-      const response = await fetch(`${Config.API_URL}/barang/${id}`, {
+      // const response = await fetch(`${Config.API_URL}/barang/${id}`, {
+      const response = await fetch(`${baseUrl}/barang/${id}`, {
         method: "DELETE", // Metode DELETE
         headers: {
           "Content-Type": "application/json", // Header untuk JSON
@@ -65,7 +66,13 @@ export default function Barang({ navigation }: Props) {
 
   // Mengambil data saat komponen pertama kali di-mount
   useEffect(() => {
-    fetchData();
+    // Set interval untuk memanggil fetchData setiap 5 detik (5000 milidetik)
+    const interval = setInterval(() => {
+      fetchData();
+    }, 2000); // 5000 ms = 5 detik
+
+    // Membersihkan interval saat komponen di-unmount agar tidak terus berjalan
+    return () => clearInterval(interval);
   }, []);
 
   // Menampilkan loading jika data belum selesai diambil

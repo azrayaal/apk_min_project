@@ -8,7 +8,7 @@ import {
   StyledView,
 } from "../../../App";
 import { Props } from "../home";
-import Config from "react-native-config";
+import { baseUrl } from "../../hooks";
 
 // Definisikan interface untuk data penjualan
 interface ItemProps {
@@ -41,7 +41,8 @@ export default function Penjualan({ navigation }: Props) {
   // Fungsi untuk mengambil data dari API
   const fetchData = async () => {
     try {
-      const response = await fetch(`${Config.API_URL}/penjualan`); // Ganti localhost jika perlu
+      const response = await fetch(`${baseUrl}/penjualan`); // Ganti localhost jika perlu
+      // const response = await fetch(`${Config.API_URL}/penjualan`); // Ganti localhost jika perlu
       const json: PenjualanProps[] = await response.json();
       setData(json); // Menyimpan data ke state
       setLoading(false); // Menghentikan indikator loading
@@ -53,7 +54,8 @@ export default function Penjualan({ navigation }: Props) {
 
   const handleDelete = async (id: number) => {
     try {
-      const response = await fetch(`${Config.API_URL}/penjualan/${id}`, {
+      const response = await fetch(`${baseUrl}/penjualan/${id}`, {
+        // const response = await fetch(`${Config.API_URL}/penjualan/${id}`, {
         method: "DELETE",
       });
       const json = await response.json();
@@ -65,7 +67,13 @@ export default function Penjualan({ navigation }: Props) {
   };
   // Mengambil data saat komponen pertama kali di-mount
   useEffect(() => {
-    fetchData();
+    // Set interval untuk memanggil fetchData setiap 5 detik (5000 milidetik)
+    const interval = setInterval(() => {
+      fetchData();
+    }, 2000); // 5000 ms = 5 detik
+
+    // Membersihkan interval saat komponen di-unmount agar tidak terus berjalan
+    return () => clearInterval(interval);
   }, []);
 
   // Menampilkan loading jika data belum selesai diambil

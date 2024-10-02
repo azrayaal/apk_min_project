@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { View, Text, TextInput, Button, Alert, FlatList } from "react-native";
 import { Picker } from "@react-native-picker/picker"; // Correct Picker import
 import { useNavigation } from "@react-navigation/native"; // For navigation
-import Config from "react-native-config";
+import { baseUrl } from "../../hooks";
 
 interface Barang {
   id: number;
@@ -24,8 +24,10 @@ export const AddPenjualan = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const pelangganResponse = await fetch(`${Config.API_URL}/pelanggan`);
-        const barangResponse = await fetch(`${Config.API_URL}/barang`);
+        // const pelangganResponse = await fetch(`${Config.API_URL}/pelanggan`);
+        const pelangganResponse = await fetch(`${baseUrl}/pelanggan`);
+        const barangResponse = await fetch(`${baseUrl}/barang`);
+        // const barangResponse = await fetch(`${Config.API_URL}/barang`);
         const pelangganData = await pelangganResponse.json();
         const barangData = await barangResponse.json();
         setDataPelanggan(pelangganData);
@@ -75,7 +77,8 @@ export const AddPenjualan = () => {
   const handleSubmitPenjualan = async () => {
     if (formData.kode_pelanggan) {
       try {
-        const response = await fetch(`${Config.API_URL}/penjualan`, {
+        const response = await fetch(`${baseUrl}/penjualan`, {
+          // const response = await fetch(`${Config.API_URL}/penjualan`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -103,7 +106,8 @@ export const AddPenjualan = () => {
       try {
         await Promise.all(
           formData.barang.map(async (item) => {
-            await fetch(`${Config.API_URL}/penjualan/${idNota}/items`, {
+            await fetch(`${baseUrl}/penjualan/${idNota}/items`, {
+              // await fetch(`${Config.API_URL}/penjualan/${idNota}/items`, {
               method: "POST",
               headers: {
                 "Content-Type": "application/json",

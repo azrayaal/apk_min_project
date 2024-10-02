@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Text, TextInput, Button, View, Alert } from "react-native";
 import { StyledText } from "../../../App";
 import { useNavigation } from "@react-navigation/native";
-import Config from "react-native-config";
+import { baseUrl } from "../../hooks";
 
 export default function AddBarang({}) {
   // State untuk menyimpan data input
@@ -23,7 +23,8 @@ export default function AddBarang({}) {
   // Fungsi untuk submit data
   const handleSubmit = async () => {
     try {
-      const response = await fetch(`${Config.API_URL}/barang`, {
+      // const response = await fetch(`${Config.API_URL}/barang`, {
+      const response = await fetch(`${baseUrl}/barang`, {
         method: "POST", // Metode POST
         headers: {
           "Content-Type": "application/json", // Header untuk JSON

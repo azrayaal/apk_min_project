@@ -8,7 +8,7 @@ import {
   StyledView,
 } from "../../../App";
 import { Props } from "../home";
-import Config from "react-native-config";
+import { baseUrl } from "../../hooks";
 
 // Definisikan interface untuk data pelanggan
 interface PelangganProps {
@@ -28,8 +28,11 @@ export default function Pelanggan({ navigation }: Props) {
   // Fungsi untuk mengambil data dari API
   const fetchData = async () => {
     try {
-      const response = await fetch(`${Config.API_URL}/pelanggan`); // Ganti localhost jika perlu
+      // const response = await fetch(`${Config.API_URL}/pelanggan`); // Ganti localhost jika perlu
+      const response = await fetch(`${baseUrl}/pelanggan`); // Ganti localhost jika perlu
       const json: PelangganProps[] = await response.json();
+      console.log(json);
+
       setData(json); // Menyimpan data ke state
       setLoading(false); // Menghentikan indikator loading
     } catch (error) {
@@ -39,7 +42,8 @@ export default function Pelanggan({ navigation }: Props) {
   };
   const handleDelete = async (id: number) => {
     try {
-      const response = await fetch(`${Config.API_URL}/pelanggan/${id}`, {
+      // const response = await fetch(`${Config.API_URL}/pelanggan/${id}`, {
+      const response = await fetch(`${baseUrl}/pelanggan/${id}`, {
         method: "DELETE", // Metode DELETE
         headers: {
           "Content-Type": "application/json", // Header untuk JSON
@@ -62,7 +66,13 @@ export default function Pelanggan({ navigation }: Props) {
   };
   // Mengambil data saat komponen pertama kali di-mount
   useEffect(() => {
-    fetchData();
+    // Set interval untuk memanggil fetchData setiap 5 detik (5000 milidetik)
+    const interval = setInterval(() => {
+      fetchData();
+    }, 2000); // 5000 ms = 5 detik
+
+    // Membersihkan interval saat komponen di-unmount agar tidak terus berjalan
+    return () => clearInterval(interval);
   }, []);
 
   // Menampilkan loading jika data belum selesai diambil

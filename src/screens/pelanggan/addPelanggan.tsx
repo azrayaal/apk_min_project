@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Text, TextInput, Button, View, Alert } from "react-native";
 import { StyledText } from "../../../App";
 import { useNavigation } from "@react-navigation/native";
-import Config from "react-native-config";
+import { baseUrl } from "../../hooks";
 
 export default function AddPelanggan() {
   // State untuk menyimpan data input
@@ -28,7 +28,8 @@ export default function AddPelanggan() {
     }
 
     try {
-      const response = await fetch(`${Config.API_URL}/pelanggan`, {
+      // const response = await fetch(`${Config.API_URL}/pelanggan`, {
+      const response = await fetch(`${baseUrl}/pelanggan`, {
         method: "POST", // Metode POST
         headers: {
           "Content-Type": "application/json", // Header untuk JSON
